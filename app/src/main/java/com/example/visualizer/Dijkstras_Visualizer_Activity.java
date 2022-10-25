@@ -6,10 +6,12 @@ import androidx.constraintlayout.widget.ConstraintSet;
 
 
 import android.graphics.Rect;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.TypedValue;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.gridlayout.widget.GridLayout;
@@ -51,19 +53,34 @@ public class Dijkstras_Visualizer_Activity extends AppCompatActivity implements 
 
     ConstraintLayout layout;
     ConstraintSet set = new ConstraintSet();
-    int rowSize = 5*2;
-    int colSize = 5*2;
+    int rowSize = 5 * 2;
+    int colSize = 5 * 2;
     int boxHeight;
     int boxWidth;
     int xOffset, yOffset;
     HashMap<String, CustomTextView> grid = new HashMap<>();
     GridLayout gridContainerView;
+    Button startBtn;
+    boolean setStartNode = false;
+    boolean hasStartNode = false;
+
+    private Button endBtn;
+    private boolean setEndNode = false;
+    private boolean hasEndNode = false;
+
+    private Button wallBtn;
+    private boolean setWallNodes;
+
+    private Button deleteBtn;
+    private boolean resetNodes = false;
+    private boolean areNodesSet = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dijkstras_visualizer);
         layout = (ConstraintLayout) findViewById(R.id.activity_dijkstras_visualizer);
+        startBtn = findViewById(R.id.startBtn);
         set.clone(layout);
         gridContainerView = (GridLayout) findViewById(R.id.gridContainer);
         gridContainerView.setAlignmentMode(GridLayout.ALIGN_BOUNDS);
@@ -221,27 +238,69 @@ public class Dijkstras_Visualizer_Activity extends AppCompatActivity implements 
 
     @Override
     public boolean onTouch(View v, MotionEvent event) {
+        if (event.getAction() == MotionEvent.ACTION_UP) {
+            if (setStartNode && !hasStartNode) {
+                v.setBackground(getDrawable(R.drawable.round_corner_start));
+                this.setStartNode = false;
+                this.hasStartNode = true;
+            }
+            if (setEndNode && !hasEndNode) {
+                v.setBackground(getDrawable(R.drawable.round_corner_end));
+                this.setEndNode = false;
+                this.hasEndNode = true;
+            }
+        }
         if (event.getAction() == MotionEvent.ACTION_DOWN) {
-            CustomTextView box = grid.get(v.getTag());
-            changeBoxColor(box);
+            if (setWallNodes) {
+                CustomTextView box = grid.get(v.getTag());
+                changeBoxColor(box, getDrawable(R.drawable.round_corner_wall));
+            }
+            if (resetNodes) {
+                CustomTextView box = grid.get(v.getTag());
+                changeBoxColor(box, getDrawable(R.drawable.round_corner_delete));
+            }
         }
         if (event.getAction() == MotionEvent.ACTION_MOVE) {
+
             grid.forEach((key, box) -> {
                 Rect r = new Rect(box.left, box.top, box.right, box.bot);
                 if (r.contains((int) event.getRawX(), (int) event.getRawY()) && v.getTag() != box.textView.getTag()) {
-                    changeBoxColor(box);
+                    if (setWallNodes) {
+                        changeBoxColor(box, getDrawable(R.drawable.round_corner_wall));
+                    } else {
+                        changeBoxColor(box, getDrawable(R.drawable.round_corner_delete));
+                    }
                 }
             });
+
         }
         if (event.getAction() == MotionEvent.ACTION_MOVE) {
             System.out.println(event.getX() + "         " + event.getRawY());
         }
         return true;
     }
-    public void changeBoxColor(CustomTextView box){
-        box.textView.setBackgroundColor(getColor(R.color.white));
+
+    public void changeBoxColor(CustomTextView box, Drawable color) {
+        box.textView.setBackground(color);
         box.isWall = true;
         grid.put(box.textView.getTag().toString(), box);
+    }
+
+    public void setStartNode(View v) {
+        this.setStartNode = true;
+    }
+
+    public void setEndNode(View v) {
+        this.setEndNode = true;
+    }
+
+    public void setWallNodes(View v) {
+        this.setWallNodes = true;
+    }
+
+    public void resetNodes(View v) {
+        this.resetNodes = true;
+        this.setWallNodes = false;
     }
 }
 /*
