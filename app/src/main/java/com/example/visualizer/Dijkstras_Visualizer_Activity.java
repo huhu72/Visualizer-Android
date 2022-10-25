@@ -126,7 +126,7 @@ public class Dijkstras_Visualizer_Activity extends AppCompatActivity implements 
         for (int i = 0; i < rowSize; i++) {
             for (int j = 0; j < colSize; j++) {
                 TextView box = new TextView(this);
-                box.setBackgroundColor(getColor(R.color.custom_grey));
+                box.setBackground(getDrawable(R.drawable.round_corner_delete));
                 box.setId(TextView.generateViewId());
                 String tag = "box-" + counter;
                 box.setTag(tag);
