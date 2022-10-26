@@ -27,8 +27,8 @@ public class Dijkstras_Visualizer_Activity extends AppCompatActivity implements 
 
     ConstraintLayout layout;
     ConstraintSet set = new ConstraintSet();
-    int rowSize = 5 ;
-    int colSize = 5 ;
+    int rowSize = 15;
+    int colSize = 15;
     int boxHeight;
     int boxWidth;
     int xOffset, yOffset;
@@ -44,8 +44,10 @@ public class Dijkstras_Visualizer_Activity extends AppCompatActivity implements 
     private boolean setWallNodes;
 
     private boolean resetNodes = false;
+    String startNodeTag, endNodeTag;
 
     Node endNode;
+    Node startNode;
     private Node[] visitedNodesInOrder;
     private Stack<Node> nodesInShortestPathOrder;
 
@@ -101,7 +103,7 @@ public class Dijkstras_Visualizer_Activity extends AppCompatActivity implements 
                 box.setId(TextView.generateViewId());
                 String tag = "box-" + counter + "." + i + "-" + j;
                 box.setTag(tag);
-                box.setText(String.valueOf(counter));
+                //   box.setText(String.valueOf(counter));
                 box.setGravity(Gravity.CENTER);
                 box.setAutoSizeTextTypeUniformWithConfiguration(
                         1, 17, 1, TypedValue.COMPLEX_UNIT_DIP);
@@ -167,9 +169,9 @@ public class Dijkstras_Visualizer_Activity extends AppCompatActivity implements 
 
     private void calculateBoxSize(int containerWidth, int containerHeight) {
         int totalWidthSpacing = (rowSize - 1) * getDPDimensions(3);
-       // System.out.println("total Width spacing: " + totalWidthSpacing);
+        // System.out.println("total Width spacing: " + totalWidthSpacing);
         boxWidth = (containerWidth - totalWidthSpacing) / rowSize;
-       // System.out.println("box Width : " + boxWidth);
+        // System.out.println("box Width : " + boxWidth);
         int totalHeightSpacing = (colSize - 1) * getDPDimensions(3);
         boxHeight = (containerHeight - totalHeightSpacing) / colSize;
         //System.out.println("box Height : " + boxHeight);
@@ -199,7 +201,8 @@ public class Dijkstras_Visualizer_Activity extends AppCompatActivity implements 
                 setStartNode = false;
                 hasStartNode = true;
                 node.isWall = false;
-                node.distance = 0;
+                this.startNode = node;
+                startNodeTag = node.textView.getTag().toString();
             }
             if (setEndNode && !hasEndNode) {
                 node.textView.setBackground(AppCompatResources.getDrawable(this, R.drawable.round_corner_end));
@@ -211,11 +214,11 @@ public class Dijkstras_Visualizer_Activity extends AppCompatActivity implements 
                 node.isWall = false;
                 hasEndNode = true;
                 this.endNode = node;
-
+                endNodeTag = node.textView.getTag().toString();
 
             }
             grid[row][col] = node;
-           // System.out.println(node.toString());
+            // System.out.println(node.toString());
         }
         if (event.getAction() == MotionEvent.ACTION_DOWN) {
 
@@ -227,14 +230,17 @@ public class Dijkstras_Visualizer_Activity extends AppCompatActivity implements 
                 if (node.isStartNode) {
                     hasStartNode = false;
                     node.distance = Integer.MAX_VALUE;
+                    this.startNode = null;
                 }
                 if (node.isEndNode) {
                     hasEndNode = false;
                     this.endNode = null;
                 }
-                changeBoxColor(resetNode(node), AppCompatResources.getDrawable(this, R.drawable.round_corner_delete));
+                resetNode(node);
+                System.out.println(node);
+                /*changeBoxColor(resetNode(node), AppCompatResources.getDrawable(this, R.drawable.round_corner_delete));*/
             }
-           // System.out.println(node.toString());
+            // System.out.println(node.toString());
         }
         if (event.getAction() == MotionEvent.ACTION_MOVE) {
             for (Node[] gridRow : grid) {
@@ -244,11 +250,10 @@ public class Dijkstras_Visualizer_Activity extends AppCompatActivity implements 
                         if (setWallNodes && !boxNode.isStartNode && !boxNode.isEndNode) {
                             boxNode.isWall = true;
                             changeBoxColor(boxNode, AppCompatResources.getDrawable(this, R.drawable.round_corner_wall));
-                           // System.out.println(boxNode);
+                            // System.out.println(boxNode);
                         } else if (resetNodes) {
                             resetNode(boxNode);
-                            changeBoxColor(boxNode, AppCompatResources.getDrawable(this, R.drawable.round_corner_delete));
-                           // System.out.println(boxNode);
+                            System.out.println(boxNode);
                         }
                     }
                 }
@@ -273,10 +278,24 @@ public class Dijkstras_Visualizer_Activity extends AppCompatActivity implements 
         return true;
     }
 
+    public void resetBoard() {
+        for (Node nodes[] : grid) {
+            for (Node n : nodes) {
+                resetNode(n);
+            }
+        }
+        hasStartNode = false;
+        this.startNode = null;
+        hasEndNode = false;
+        this.endNode = null;
+    }
+
     public Node resetNode(Node node) {
         node.isWall = false;
         node.isStartNode = false;
         node.isEndNode = false;
+        node.distance = Integer.MAX_VALUE;
+        changeBoxColor(node, AppCompatResources.getDrawable(this, R.drawable.round_corner_delete));
         return node;
     }
 
@@ -312,44 +331,55 @@ public class Dijkstras_Visualizer_Activity extends AppCompatActivity implements 
         setStartNode = false;
         setWallNodes = false;
     }
-
-    public void runAlgorithm(View v){
-        Dijkstra dijkstra = new Dijkstra(this.grid,endNode);
+    //TODO: Add clear board button
+    // if (this.visitedNodesInOrder != null) resetBoard();
+    public void runAlgorithm(View v) {
+        Dijkstra dijkstra = new Dijkstra(this.grid, startNode, endNode);
         this.visitedNodesInOrder = dijkstra.getVisitedNodesInOrder();
-        for( Node n : visitedNodesInOrder){
+      /*  for (Node n : visitedNodesInOrder) {
             System.out.println(n.textView.getTag());
-        }
+        }*/
         this.nodesInShortestPathOrder = dijkstra.getNodesInShortestPathOrder(endNode);
-        System.out.println("_____________________________________________Shortest Path____________________________________");
-        for( Node n : nodesInShortestPathOrder){
+      /*  System.out.println("_____________________________________________Shortest Path____________________________________");
+        for (Node n : nodesInShortestPathOrder) {
             System.out.println(n.textView.getTag());
-        }
-        //this.animateAlgorithm(visitedNodesInOrder,nodesInShortestPathOrder);
+        }*/
+        this.animateAlgorithm(visitedNodesInOrder, nodesInShortestPathOrder);
 
     }
 
     private void animateAlgorithm(Node[] visitedNodesInOrder, Stack<Node> nodesInShortestPathOrder) {
-        for( int i = 0; i <= visitedNodesInOrder.length; i++){
+        //  System.out.println("visited order");
+        for (int i = 0; i < visitedNodesInOrder.length; i++) {
             final int index = i;
-            if (i == visitedNodesInOrder.length){
-                new android.os.Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        animateShortestPath(nodesInShortestPathOrder);
+            if (i == visitedNodesInOrder.length - 1) {
+                new android.os.Handler(Looper.getMainLooper()).postDelayed(() -> animateShortestPath(nodesInShortestPathOrder), 10 * i);
+                System.out.println("called animateShortestPath");
+                return;
+            } else {
+                new android.os.Handler(Looper.getMainLooper()).postDelayed(() -> {
+                    if (visitedNodesInOrder[index] != null) {
+                        Node node = visitedNodesInOrder[index];
+                        if (node.textView.getTag() != startNodeTag && node.textView.getTag() != endNodeTag) {
+                            grid[node.row][node.col].textView.setBackground(getDrawable(R.drawable.round_corner_visited));
+                            grid[node.row][node.col].textView.setText(String.valueOf(node.distance));
+                        }
                     }
-                },10*i);
+                }, 10 * i);
             }
-            new android.os.Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    Node node = visitedNodesInOrder[index];
-                    grid[node.row][node.col].textView.setBackground(getDrawable(R.drawable.round_corner_path_view));
-                }
-            }, 10*i);
         }
     }
-    private void animateShortestPath(Stack<Node> nodesInShortestPathOrder){
 
+    private void animateShortestPath(Stack<Node> nodesInShortestPathOrder) {
+        for (int i = 0; i < nodesInShortestPathOrder.size(); i++) {
+            new android.os.Handler(Looper.getMainLooper()).postDelayed(() -> {
+                Node node = nodesInShortestPathOrder.pop();
+                if (node.textView.getTag() != startNodeTag && node.textView.getTag() != endNodeTag) {
+                    grid[node.row][node.col].textView.setBackground(getDrawable(R.drawable.round_corner_path_view));
+                    grid[node.row][node.col].textView.setText(String.valueOf(node.distance));
+                }
+            }, 10 * i);
+        }
     }
 }
 /*

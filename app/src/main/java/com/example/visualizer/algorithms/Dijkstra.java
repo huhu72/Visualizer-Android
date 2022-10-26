@@ -13,10 +13,13 @@ public class Dijkstra {
     Node endNode;
     ArrayList<Node> visitedNodesInOrder = new ArrayList<>();
     ArrayList<Node> unvisitedNodes;
+    Node start;
 
-    public Dijkstra(Node[][] grid, Node end) {
+    public Dijkstra(Node[][] grid, Node start,Node end) {
         this.grid = grid;
         this.endNode = end;
+        this.start = start;
+        start.distance = 0;
         this.unvisitedNodes = getAllNodes(this.grid);
 
     }
@@ -34,19 +37,19 @@ public class Dijkstra {
     public Node[] getVisitedNodesInOrder() {
         while (unvisitedNodes.size() != 0) {
             sortNodesByDistance();
-            System.out.println("----------Loop started----------");
-            System.out.println("Unvisited Nodes: " + unvisitedNodes);
+         //   System.out.println("----------Loop started----------");
+         //   System.out.println("Unvisited Nodes: " + unvisitedNodes);
             Node closestNode = unvisitedNodes.remove(0);
-            System.out.println("Closest node: " + closestNode);
-            /*if (closestNode.isWall) continue;
+         //   System.out.println("Closest node: " + closestNode);
+            if (closestNode.isWall) continue;
             if (closestNode.distance == Integer.MAX_VALUE)
-                return this.visitedNodesInOrder.toArray(new Node[visitedNodesInOrder.size()]);*/
+                return this.visitedNodesInOrder.toArray(new Node[visitedNodesInOrder.size()]);
             closestNode.isVisited = true;
             visitedNodesInOrder.add(closestNode);
             if (closestNode.textView.getTag().equals(endNode.textView.getTag())) return this.visitedNodesInOrder.toArray(new Node[visitedNodesInOrder.size()]);
-            System.out.println("Updating closes node");
+         //   System.out.println("Updating closes node");
             updateUnvisitedNeighbors(closestNode, grid);
-            System.out.println("closses nodes updated");
+          //  System.out.println("closses nodes updated");
         }
         return  this.visitedNodesInOrder.toArray(new Node[visitedNodesInOrder.size()]);
     }
@@ -61,7 +64,7 @@ public class Dijkstra {
             neighbor.distance = node.distance + 1;
             neighbor.previousNode = node;
         }
-        System.out.println("UnvisitedNeighbors: " + unvisitedNeighbors);
+        //System.out.println("UnvisitedNeighbors: " + unvisitedNeighbors);
     }
 
     private ArrayList<Node> getUnvisitedNeighbors(Node node, Node[][] grid) {

@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <shape xmlns:android="http://schemas.android.com/apk/res/android"
-    android:padding="0dp"
+    android:padding="16dp"
     android:shape="rectangle">
     <stroke
-        android:width="0dp"
-        android:color="@color/custom_grey"/>
+        android:width="5dp"
+        android:color="#B594B6" />
     <corners android:radius="5dp" />
     <solid
-        android:color="@color/custom_grey"/>
+        android:color="#B594B6"/>
 </shape>
     <!--https://coolors.co/b594b6-2a9d8f-e9c46a-f4a261-e76f51-->
