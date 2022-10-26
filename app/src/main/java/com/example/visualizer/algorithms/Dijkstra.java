@@ -42,8 +42,8 @@ public class Dijkstra {
             }
         }
         return nodes;
-    }*/
-  /*  public Node[] getVisitedNodesInOrder() {
+    }
+     public Node[] getVisitedNodesInOrder() {
         while (unvisitedNodes.size() != 0) {
             sortNodesByDistance();
             //   System.out.println("----------Loop started----------");
@@ -61,6 +61,8 @@ public class Dijkstra {
             //  System.out.println("closses nodes updated");
         }
         return  this.visitedNodesInOrder.toArray(new Node[visitedNodesInOrder.size()]);
+    }  private void sortNodesByDistance() {
+       this.unvisitedNodes.sort((nodeA, nodeB) -> nodeA.distance - nodeB.distance);
     }*/
     public Node[] getVisitedNodesInOrder() {
         while (unvisitedNodes.size() != 0) {
@@ -123,3 +125,34 @@ public class Dijkstra {
         return nodeInShortestPathOrder;
     }
 }
+//NOTE: For arraylist usage
+  /*private ArrayList<Node> getAllNodes(Node[][] grid) {
+        ArrayList<Node> nodes = new ArrayList<>();
+        for (Node[] row : grid) {
+            for (Node node : row) {
+                nodes.add(node);
+            }
+        }
+        return nodes;
+    }
+     public Node[] getVisitedNodesInOrder() {
+        while (unvisitedNodes.size() != 0) {
+            sortNodesByDistance();
+            //   System.out.println("----------Loop started----------");
+            //   System.out.println("Unvisited Nodes: " + unvisitedNodes);
+            Node closestNode = unvisitedNodes.remove(0);
+            //   System.out.println("Closest node: " + closestNode);
+            if (closestNode.isWall) continue;
+            if (closestNode.distance == Integer.MAX_VALUE)
+                return this.visitedNodesInOrder.toArray(new Node[visitedNodesInOrder.size()]);
+            closestNode.isVisited = true;
+            visitedNodesInOrder.add(closestNode);
+            if (closestNode.textView.getTag().equals(endNode.textView.getTag())) return this.visitedNodesInOrder.toArray(new Node[visitedNodesInOrder.size()]);
+            //   System.out.println("Updating closes node");
+            updateUnvisitedNeighbors(closestNode, grid);
+            //  System.out.println("closses nodes updated");
+        }
+        return  this.visitedNodesInOrder.toArray(new Node[visitedNodesInOrder.size()]);
+    }  private void sortNodesByDistance() {
+       this.unvisitedNodes.sort((nodeA, nodeB) -> nodeA.distance - nodeB.distance);
+    }*/
