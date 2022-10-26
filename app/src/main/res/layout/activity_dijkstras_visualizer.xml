@@ -19,7 +19,8 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/settings_48px"
-        tools:ignore="SpeakableTextPresentCheck" />
+F        tools:ignore="SpeakableTextPresentCheck"
+        android:contentDescription="Settings" />
 
     <Spinner
         android:id="@+id/spinner"
@@ -37,9 +38,10 @@
         android:id="@+id/linearLayout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="2dp"
         android:layout_marginTop="5dp"
+        android:baselineAligned="false"
         android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageButton">
 
@@ -55,10 +57,9 @@
                 style="@style/Widget.AppCompat.Button"
                 android:layout_width="35dp"
                 android:layout_height="35dp"
-                android:layout_weight="1"
                 android:background="@drawable/round_corner_start"
                 android:onClick="setStartNode"
-                tools:ignore="SpeakableTextPresentCheck" />
+                tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -79,10 +80,9 @@
                 style="@style/Widget.AppCompat.Button"
                 android:layout_width="35dp"
                 android:layout_height="35dp"
-                android:layout_weight="1"
                 android:background="@drawable/round_corner_end"
                 android:onClick="setEndNode"
-                tools:ignore="SpeakableTextPresentCheck" />
+                tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -102,10 +102,9 @@
                 style="@style/Widget.AppCompat.Button"
                 android:layout_width="35dp"
                 android:layout_height="35dp"
-                android:layout_weight="1"
                 android:background="@drawable/round_corner_wall"
                 android:onClick="setWallNodes"
-                tools:ignore="SpeakableTextPresentCheck" />
+                tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -125,10 +124,9 @@
                 style="@style/Widget.AppCompat.Button"
                 android:layout_width="35dp"
                 android:layout_height="35dp"
-                android:layout_weight="1"
                 android:background="@drawable/round_corner_delete"
                 android:onClick="resetNodes"
-                tools:ignore="SpeakableTextPresentCheck" />
+                tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -141,14 +139,13 @@
         android:id="@+id/gridContainer"
         android:layout_width="400dp"
         android:layout_height="400dp"
-        android:layout_marginTop="1dp"
+        android:layout_marginTop="10dp"
         android:tag="grid"
         app:columnCount="15"
-        app:layout_constraintBottom_toTopOf="@+id/run"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout"
+        app:layout_constraintTop_toBottomOf="@+id/run"
         app:rowCount="15" />
 
     <Button
@@ -156,20 +153,19 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginBottom="16dp"
+        android:layout_marginTop="5dp"
         android:onClick="runAlgorithm"
         android:text="Run"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
 
     <Button
         android:id="@+id/button2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
-        android:layout_marginBottom="16dp"
         android:text="Button"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/run" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

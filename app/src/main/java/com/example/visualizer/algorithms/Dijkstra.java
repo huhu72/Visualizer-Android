@@ -34,36 +34,7 @@ public class Dijkstra {
         }
         return nodes;
     }
-    /*private ArrayList<Node> getAllNodes(Node[][] grid) {
-        ArrayList<Node> nodes = new ArrayList<>();
-        for (Node[] row : grid) {
-            for (Node node : row) {
-                nodes.add(node);
-            }
-        }
-        return nodes;
-    }
-     public Node[] getVisitedNodesInOrder() {
-        while (unvisitedNodes.size() != 0) {
-            sortNodesByDistance();
-            //   System.out.println("----------Loop started----------");
-            //   System.out.println("Unvisited Nodes: " + unvisitedNodes);
-            Node closestNode = unvisitedNodes.remove(0);
-            //   System.out.println("Closest node: " + closestNode);
-            if (closestNode.isWall) continue;
-            if (closestNode.distance == Integer.MAX_VALUE)
-                return this.visitedNodesInOrder.toArray(new Node[visitedNodesInOrder.size()]);
-            closestNode.isVisited = true;
-            visitedNodesInOrder.add(closestNode);
-            if (closestNode.textView.getTag().equals(endNode.textView.getTag())) return this.visitedNodesInOrder.toArray(new Node[visitedNodesInOrder.size()]);
-            //   System.out.println("Updating closes node");
-            updateUnvisitedNeighbors(closestNode, grid);
-            //  System.out.println("closses nodes updated");
-        }
-        return  this.visitedNodesInOrder.toArray(new Node[visitedNodesInOrder.size()]);
-    }  private void sortNodesByDistance() {
-       this.unvisitedNodes.sort((nodeA, nodeB) -> nodeA.distance - nodeB.distance);
-    }*/
+
     public Node[] getVisitedNodesInOrder() {
         while (unvisitedNodes.size() != 0) {
            // sortNodesByDistance();
@@ -84,10 +55,6 @@ public class Dijkstra {
         return  this.visitedNodesInOrder.toArray(new Node[visitedNodesInOrder.size()]);
     }
 
-  /*  private void sortNodesByDistance() {
-       this.unvisitedNodes.sort((nodeA, nodeB) -> nodeA.distance - nodeB.distance);
-    }*/
-
     private void updateUnvisitedNeighbors(Node node, Node[][] grid) {
         ArrayList<Node> unvisitedNeighbors = getUnvisitedNeighbors(node, grid);
         for (Node neighbor : unvisitedNeighbors) {
@@ -103,6 +70,9 @@ public class Dijkstra {
         ArrayList<Node> neighbors = new ArrayList<>();
         int col = node.col;
         int row = node.row;
+        /**
+         * For A* get the corners as well, x +/- 1, y +/- 1
+         */
         //Adds the node above the current node
         if (row > 0) neighbors.add(grid[row - 1][col]);
         //Adds the node below the current node if its not in the last row
@@ -125,8 +95,8 @@ public class Dijkstra {
         return nodeInShortestPathOrder;
     }
 }
-//NOTE: For arraylist usage
-  /*private ArrayList<Node> getAllNodes(Node[][] grid) {
+/** For arraylist usage
+ private ArrayList<Node> getAllNodes(Node[][] grid) {
         ArrayList<Node> nodes = new ArrayList<>();
         for (Node[] row : grid) {
             for (Node node : row) {
