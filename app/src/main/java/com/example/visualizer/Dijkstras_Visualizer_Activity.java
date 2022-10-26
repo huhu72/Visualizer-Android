@@ -9,6 +9,7 @@ import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.TypedValue;
+import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
@@ -60,18 +61,14 @@ public class Dijkstras_Visualizer_Activity extends AppCompatActivity implements 
     int xOffset, yOffset;
     HashMap<String, CustomTextView> grid = new HashMap<>();
     GridLayout gridContainerView;
-    Button startBtn;
     boolean setStartNode = false;
     boolean hasStartNode = false;
 
-    private Button endBtn;
     private boolean setEndNode = false;
     private boolean hasEndNode = false;
 
-    private Button wallBtn;
     private boolean setWallNodes;
 
-    private Button deleteBtn;
     private boolean resetNodes = false;
     private boolean areNodesSet = false;
 
@@ -80,7 +77,6 @@ public class Dijkstras_Visualizer_Activity extends AppCompatActivity implements 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dijkstras_visualizer);
         layout = (ConstraintLayout) findViewById(R.id.activity_dijkstras_visualizer);
-        startBtn = findViewById(R.id.startBtn);
         set.clone(layout);
         gridContainerView = (GridLayout) findViewById(R.id.gridContainer);
         gridContainerView.setAlignmentMode(GridLayout.ALIGN_BOUNDS);
@@ -131,6 +127,7 @@ public class Dijkstras_Visualizer_Activity extends AppCompatActivity implements 
                 String tag = "box-" + counter;
                 box.setTag(tag);
                 box.setText(String.valueOf(counter));
+                box.setGravity(Gravity.CENTER);
                 box.setAutoSizeTextTypeUniformWithConfiguration(
                         1, 17, 1, TypedValue.COMPLEX_UNIT_DIP);
                 box.setOnTouchListener(this);
@@ -142,9 +139,9 @@ public class Dijkstras_Visualizer_Activity extends AppCompatActivity implements 
                 } else if (i != 0 && j == 0) {
                     //Row > 0 Column = 0
                     layoutParams.leftMargin = getDPDimensions(0);
-                    layoutParams.topMargin = getDPDimensions(1);
+                    layoutParams.topMargin = getDPDimensions(3);
                 } else {
-                    layoutParams.leftMargin = getDPDimensions(1);
+                    layoutParams.leftMargin = getDPDimensions(3);
                     layoutParams.topMargin = getDPDimensions(0);
                 }
                 box.setLayoutParams(layoutParams);
@@ -152,8 +149,6 @@ public class Dijkstras_Visualizer_Activity extends AppCompatActivity implements 
                 gridContainerView.addView(box);
                 grid.put(tag, new CustomTextView(box));
                 counter++;
-                final int rowIndx = i;
-                final int colIndx = j;
                 grid.get(tag).textView.post(() -> {
                     int[] coord = new int[2];
                     grid.get(tag).textView.getLocationOnScreen(coord);
@@ -223,11 +218,11 @@ public class Dijkstras_Visualizer_Activity extends AppCompatActivity implements 
     }
 
     private void calculateBoxSize(int containerWidth, int containerHeight) {
-        int totalWidthSpacing = (rowSize - 1) * getDPDimensions(1);
+        int totalWidthSpacing = (rowSize - 1) * getDPDimensions(3);
         System.out.println("total Width spacing: " + totalWidthSpacing);
         boxWidth = (containerWidth - totalWidthSpacing) / rowSize;
         System.out.println("box Width : " + boxWidth);
-        int totalHeightSpacing = (colSize - 1) * getDPDimensions(1);
+        int totalHeightSpacing = (colSize - 1) * getDPDimensions(3);
         boxHeight = (containerHeight - totalHeightSpacing) / colSize;
         System.out.println("box Height : " + boxHeight);
     }
@@ -263,8 +258,8 @@ public class Dijkstras_Visualizer_Activity extends AppCompatActivity implements 
         if (event.getAction() == MotionEvent.ACTION_MOVE) {
 
             grid.forEach((key, box) -> {
-                Rect r = new Rect(box.left, box.top, box.right, box.bot);
-                if (r.contains((int) event.getRawX(), (int) event.getRawY()) && v.getTag() != box.textView.getTag()) {
+                Rect viewBounds = new Rect(box.left, box.top, box.right, box.bot);
+                if (viewBounds.contains((int) event.getRawX(), (int) event.getRawY()) && v.getTag() != box.textView.getTag()) {
                     if (setWallNodes) {
                         changeBoxColor(box, getDrawable(R.drawable.round_corner_wall));
                     } else {
