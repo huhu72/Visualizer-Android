@@ -27,8 +27,8 @@ public class Dijkstras_Visualizer_Activity extends AppCompatActivity implements 
 
     ConstraintLayout layout;
     ConstraintSet set = new ConstraintSet();
-    int rowSize = 15;
-    int colSize = 15;
+    int rowSize = 3;
+    int colSize = 3;
     int boxHeight;
     int boxWidth;
     int xOffset, yOffset;
@@ -278,7 +278,7 @@ public class Dijkstras_Visualizer_Activity extends AppCompatActivity implements 
         return true;
     }
 
-    public void resetBoard() {
+    public void resetBoard(View v) {
         for (Node nodes[] : grid) {
             for (Node n : nodes) {
                 resetNode(n);
@@ -295,6 +295,9 @@ public class Dijkstras_Visualizer_Activity extends AppCompatActivity implements 
         node.isStartNode = false;
         node.isEndNode = false;
         node.distance = Integer.MAX_VALUE;
+        node.textView.setText("");
+        node.isVisited = false;
+        node.previousNode = null;
         changeBoxColor(node, AppCompatResources.getDrawable(this, R.drawable.round_corner_delete));
         return node;
     }
@@ -335,10 +338,11 @@ public class Dijkstras_Visualizer_Activity extends AppCompatActivity implements 
     // if (this.visitedNodesInOrder != null) resetBoard();
     public void runAlgorithm(View v) {
         Dijkstra dijkstra = new Dijkstra(this.grid, startNode, endNode);
+
         this.visitedNodesInOrder = dijkstra.getVisitedNodesInOrder();
-      /*  for (Node n : visitedNodesInOrder) {
+        for (Node n : visitedNodesInOrder) {
             System.out.println(n.textView.getTag());
-        }*/
+        }
         this.nodesInShortestPathOrder = dijkstra.getNodesInShortestPathOrder(endNode);
       /*  System.out.println("_____________________________________________Shortest Path____________________________________");
         for (Node n : nodesInShortestPathOrder) {
@@ -354,7 +358,7 @@ public class Dijkstras_Visualizer_Activity extends AppCompatActivity implements 
             final int index = i;
             if (i == visitedNodesInOrder.length - 1) {
                 new android.os.Handler(Looper.getMainLooper()).postDelayed(() -> animateShortestPath(nodesInShortestPathOrder), 10 * i);
-                System.out.println("called animateShortestPath");
+               // System.out.println("called animateShortestPath");
                 return;
             } else {
                 new android.os.Handler(Looper.getMainLooper()).postDelayed(() -> {

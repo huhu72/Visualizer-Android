@@ -39,7 +39,7 @@ public class Node{
     @NonNull
     @Override
     public String toString() {
-        return textView.getTag().toString();
+        return textView.getTag().toString() + " Distance: " + this.distance;
     }
 
 }
