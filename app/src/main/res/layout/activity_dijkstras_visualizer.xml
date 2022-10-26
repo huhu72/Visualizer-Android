@@ -57,7 +57,8 @@
                 android:layout_height="35dp"
                 android:layout_weight="1"
                 android:background="@drawable/round_corner_start"
-                android:onClick="setStartNode" />
+                android:onClick="setStartNode"
+                tools:ignore="SpeakableTextPresentCheck" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -80,7 +81,8 @@
                 android:layout_height="35dp"
                 android:layout_weight="1"
                 android:background="@drawable/round_corner_end"
-                android:onClick="setEndNode" />
+                android:onClick="setEndNode"
+                tools:ignore="SpeakableTextPresentCheck" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -102,7 +104,8 @@
                 android:layout_height="35dp"
                 android:layout_weight="1"
                 android:background="@drawable/round_corner_wall"
-                android:onClick="setWallNodes" />
+                android:onClick="setWallNodes"
+                tools:ignore="SpeakableTextPresentCheck" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -124,7 +127,8 @@
                 android:layout_height="35dp"
                 android:layout_weight="1"
                 android:background="@drawable/round_corner_delete"
-                android:onClick="resetNodes" />
+                android:onClick="resetNodes"
+                tools:ignore="SpeakableTextPresentCheck" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -140,7 +144,7 @@
         android:layout_marginTop="1dp"
         android:tag="grid"
         app:columnCount="15"
-        app:layout_constraintBottom_toTopOf="@+id/button"
+        app:layout_constraintBottom_toTopOf="@+id/run"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
@@ -148,12 +152,13 @@
         app:rowCount="15" />
 
     <Button
-        android:id="@+id/button"
+        android:id="@+id/run"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginBottom="16dp"
-        android:text="Button"
+        android:onClick="runAlgorithm"
+        android:text="Run"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
