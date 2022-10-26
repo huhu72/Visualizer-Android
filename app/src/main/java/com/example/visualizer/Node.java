@@ -4,7 +4,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 
-public class Node {
+public class Node{
     public TextView textView;
     int left;
     int right;
@@ -41,4 +41,5 @@ public class Node {
     public String toString() {
         return textView.getTag().toString();
     }
+
 }
